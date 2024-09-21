@@ -3,6 +3,8 @@ import openai
 import sqlite3
 import os
 
+cwd = os.path.dirname(os.path.abspath(__file__))
+
 if 'page' not in st.session_state:
     st.session_state.page = 1  # Start at page 1
 # State management across pages
@@ -70,17 +72,22 @@ def main():
     if st.session_state.page == 2 and st.session_state.api_key_valid:
         st.header("Step 2: Upload SQLite Database File")
         uploaded_file = st.file_uploader("Choose a SQLite database file", type=["db"])
+        
         if uploaded_file is not None:
             with open(f"temp_{uploaded_file.name}", "wb") as f:
                 f.write(uploaded_file.getbuffer())
             
-            db_file_path = f"temp_{uploaded_file.name}"
+            db_file_name = f"temp_{uploaded_file.name}"
             try:
-                conn = sqlite3.connect(db_file_path)
+                conn = sqlite3.connect(db_file_name)
                 st.session_state.db_conn = conn
                 st.success(f"Database file '{uploaded_file.name}' uploaded successfully!")
                 st.session_state.db_file_uploaded = True
+                
+                from scripts.sql_rag_langgraph import update_db
+                db_file_path = os.path.join(cwd,db_file_name)
                 st.session_state.db_file_path = db_file_path
+                update_db(db_file_path)
             except Exception as e:
                 st.error(f"Error: {e}")
     

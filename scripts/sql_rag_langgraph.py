@@ -10,6 +10,9 @@ class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
 
 
+def update_db(abs_path):
+    set_db(abs_path)
+
 def model_get_schema(state: State):
     messages = get_schema_llm.invoke(state["messages"])
     return {

@@ -1,7 +1,6 @@
 from langchain_community.utilities import SQLDatabase
 import sqlite3
 import requests
-# from api_key import *
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
 from langchain_core.prompts import ChatPromptTemplate
@@ -14,10 +13,14 @@ from langchain.tools import Tool
 from pydantic import BaseModel, Field
 
 
-db = SQLDatabase.from_uri("sqlite:////home/guiseai/edgeops-cicd/database/edgeops.db")
+db = SQLDatabase.from_uri("sqlite:///temp.db")
+
+def set_db(abs_path):
+    global db 
+    db = SQLDatabase.from_uri(f"sqlite:///{abs_path}")
 
 def list_tables(temp: str):
-    return db.get_table_names()
+    return db.get_usable_table_names()
 
 def get_schema(table_name: str):
     try:
