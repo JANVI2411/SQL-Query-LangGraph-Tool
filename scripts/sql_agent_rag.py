@@ -12,7 +12,6 @@ from langgraph.prebuilt import ToolNode
 from langchain.tools import Tool
 from pydantic import BaseModel, Field
 
-
 db = SQLDatabase.from_uri("sqlite:///temp.db")
 
 def set_db(abs_path):
