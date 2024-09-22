@@ -74,10 +74,10 @@ def main():
         uploaded_file = st.file_uploader("Choose a SQLite database file", type=["db"])
         
         if uploaded_file is not None:
-            with open(f"temp_{uploaded_file.name}", "wb") as f:
+            with open(f"/tmp/temp_{uploaded_file.name}", "wb") as f:
                 f.write(uploaded_file.getbuffer())
             
-            db_file_name = f"temp_{uploaded_file.name}"
+            db_file_name = f"/tmp/temp_{uploaded_file.name}"
             try:
                 conn = sqlite3.connect(db_file_name)
                 st.session_state.db_conn = conn

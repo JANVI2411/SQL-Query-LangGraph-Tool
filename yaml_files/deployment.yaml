@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-query-tool-deployment
+  labels:
+    app: sql-query-tool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sql-query-tool
+  template:
+    metadata:
+      labels:
+        app: sql-query-tool
+    spec:
+      containers:
+        - name: sql-query-tool-container
+          image: janvi1998/sql_query_langgraph_tool:v0.0.2
+          ports:
+            - containerPort: 9000
+          resources:
+            requests:
+              memory: "512Mi"   # 512 MB guaranteed memory
+              cpu: "500m"       # 0.5 vCPU guaranteed
+            limits:
+              memory: "1Gi"     # 1 GB max memory limit
+              cpu: "1"          # 1 vCPU max limit
+              
